@@ -15,6 +15,7 @@ datasource db {
 
 model Status {
   id          Int         @id @default(autoincrement())
+  uuid        String      @unique
   designation String
   code        String
   User        User[]
@@ -24,6 +25,7 @@ model Status {
 
 model User {
   id        Int         @id @default(autoincrement())
+  uuid      String      @unique
   name      String
   is_admin  Boolean
   email     String      @unique
@@ -39,18 +41,20 @@ model User {
 
 model Account {
   id          Int         @id @default(autoincrement())
+  uuid        String      @unique
   designation String
   description String?     @db.VarChar(3000)
   year        Int
   status      Status      @relation(fields: [statusId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   statusId    Int
   createdAt   DateTime    @default(now())
-  updatedAt   DateTime    @updatedAt
+  updatedAt   DateTime    @updatedAt()
   Operation   Operation[]
 }
 
 model Operation {
   id        Int      @id @default(autoincrement())
+  uuid      String   @unique
   is_credit Boolean
   month     Int
   year      Int
@@ -66,6 +70,7 @@ model Operation {
 
 model History {
   id          Int      @id @default(autoincrement())
+  uuid        String   @unique
   description String?  @db.VarChar(3000)
   user        User     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId      Int

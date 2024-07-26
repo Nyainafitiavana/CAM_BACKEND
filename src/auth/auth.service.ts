@@ -1,4 +1,4 @@
-import { HttpStatus, Injectable } from '@nestjs/common';
+import { ConflictException, HttpStatus, Injectable, UnauthorizedException } from "@nestjs/common";
 import { JwtService } from '@nestjs/jwt';
 import { AuthInterface } from './auth.interface';
 import { UserService } from '../user/user.service';
@@ -15,17 +15,15 @@ export class AuthService {
     const user: User = await this.userService.findOneByEmail(email);
 
     if (!user) {
-      return {
-        statusCode: HttpStatus.CONFLICT,
-        message: `Cet e-mail ${email} n'a pas été trouvé`,
-      };
+      throw new UnauthorizedException({
+        message: `This email "${email}" is not found`,
+      });
     }
 
     if (password !== user.password) {
-      return {
-        statusCode: HttpStatus.CONFLICT,
-        message: 'Mot de passe incorrect !',
-      };
+      throw new UnauthorizedException({
+        message: `Passwords do not match`,
+      });
     }
 
     delete user.password;

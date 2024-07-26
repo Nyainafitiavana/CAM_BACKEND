@@ -1,11 +1,4 @@
-import {
-  IsBoolean,
-  IsEmail,
-  IsNumber,
-  IsObject,
-  IsString,
-} from 'class-validator';
-import { Status } from '@prisma/client';
+import { IsBoolean, IsEmail, IsString } from 'class-validator';
 
 export class CreateUserDto {
   @IsString()

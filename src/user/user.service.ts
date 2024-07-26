@@ -1,12 +1,12 @@
-import { HttpStatus, Injectable } from '@nestjs/common';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
-import { PrismaService } from '../prisma/prisma.service';
-import { Account, Prisma, User } from '@prisma/client';
-import { ExecuteResponse, Paginate } from '../../utils/custom.interface';
-import Helper from '../../utils/helper';
-import { MESSAGE, STATUS } from '../../utils/constant';
-import { CustomException } from '../../utils/ExeptionCustom';
+import { HttpStatus, Injectable } from "@nestjs/common";
+import { CreateUserDto } from "./dto/create-user.dto";
+import { UpdateUserDto } from "./dto/update-user.dto";
+import { PrismaService } from "../prisma/prisma.service";
+import { Prisma, User } from "@prisma/client";
+import { ExecuteResponse, Paginate } from "../../utils/custom.interface";
+import Helper from "../../utils/helper";
+import { MESSAGE, STATUS } from "../../utils/constant";
+import { CustomException } from "../../utils/ExeptionCustom";
 
 @Injectable()
 export class UserService {
@@ -79,7 +79,7 @@ export class UserService {
   }
 
   async findOneByEmail(email: string): Promise<User> {
-    const user: User = await this.prisma.user.findUnique({
+    return this.prisma.user.findUnique({
       where: {
         email: email,
       },
@@ -93,11 +93,6 @@ export class UserService {
         },
       },
     });
-
-    if (!user) {
-      throw new CustomException(MESSAGE.EMAIL_NOT_FOUND, HttpStatus.CONFLICT);
-    }
-    return user;
   }
 
   async findOne(uuid: string): Promise<User> {
@@ -122,6 +117,7 @@ export class UserService {
 
     delete user.id;
     delete user.password;
+    delete user.statusId;
     return user;
   }
 

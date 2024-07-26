@@ -26,7 +26,7 @@ export class AuthController {
         body.password,
       );
 
-      res.status(result.statusCode).json(result);
+      res.status(200).json(result);
     } catch (error) {
       next(error);
     }
